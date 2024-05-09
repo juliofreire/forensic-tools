@@ -77,23 +77,21 @@ tm convert_to_tm(std::string date){
 }
 
 bool compare_dates(tm date_to_compare, tm date){
-	// bool match = false;
+
 	if (date_to_compare.tm_mday == date.tm_mday){
-		// cout << "ok";
+
 		if ((date_to_compare.tm_mon-1) == date.tm_mon){
-			// cout << "ok";
+
 			if ((date_to_compare.tm_year ) == date.tm_year + 1900){
-				// match = true;
+
 				if (date_to_compare.tm_wday == date.tm_wday){
-					// cout << "ok";
+
 					if (date_to_compare.tm_hour == date.tm_hour){
-						// cout << "ok";
+
 						if (date_to_compare.tm_min == date.tm_min){
-							// cout << "ok";
-							if (date_to_compare.tm_sec == date.tm_sec){
-								// cout << "ok";
-								return true;
-							}
+
+							if (date_to_compare.tm_sec == date.tm_sec) return true;
+
 						}
 					}
 				}
@@ -109,7 +107,7 @@ int main (int argc, char* args[]){
 	string inputfile_path = args[1];
 	string date_to_compare = args[2];
 
-	cout << date_to_compare << endl;
+	std::cout << date_to_compare << std::endl;
 
 	tm date_to_compare_tm = convert_to_tm(date_to_compare);
 
@@ -121,6 +119,7 @@ int main (int argc, char* args[]){
 	inputfile.seekg(0, inputfile.beg);
 
 	std::cout << "The whole file has " << length << " characeters" << std::endl;
+	std::cout << "The hours must be -3 what you digit!!!" << std::endl;
 
 	//
 	char* buffer1 = new char [length];
@@ -142,17 +141,11 @@ int main (int argc, char* args[]){
 				continue;
 			}
 
-			// cout << date << endl;
-			// cout << "BE:" << endl;
-			// cout << date << endl;
-			// cout << "LE:" << endl;
-			// read_little_endian(date);
-			// cout << read_little_endian(date) << endl;
-			// cout << "readable date:" << endl;
+
 			chrono = hex_to_time(read_little_endian(date));
 			// cout << chrono << endl;
 			if (chrono == 1229866575){
-				// cout << date << endl;
+
 				j = 0;
 			}
 			time = *localtime(&chrono);
@@ -165,42 +158,16 @@ int main (int argc, char* args[]){
 			minute = time.tm_min;
 			second = time.tm_sec;
 
-			// cout << year << endl;
-			// cout << year << month << day << wday << hour << minute << second << endl;
-
-			// cout << date_to_compare_tm.tm_year << endl;
-			// cout << date_to_compare_tm.tm_mon << endl;
-			// cout << date_to_compare_tm.tm_mday << endl;
-			// cout << date_to_compare_tm.tm_wday << endl;
-			// cout << date_to_compare_tm.tm_hour << endl;
-			// cout << date_to_compare_tm.tm_min << endl;
-			// cout << date_to_compare_tm.tm_sec << endl;
-
-
-			// cout << endl;
-
-			// cout << j;
 
 			if (compare_dates(date_to_compare_tm, time)){
-				// cout << " okoko ";
-				// cout << std::hex << i;
-				cout << std::put_time(&time, "%c") << endl;
-				cout << std::hex << i << endl;
-				cout << "The time begins ";
-				cout << std::dec << (j-2) << " bytes after the OFNI8." << endl;
+
+				std::cout << std::put_time(&time, "%c") << std::endl;
+				std::cout << std::hex << i << std::endl;
+				std::cout << "The time begins ";
+				std::cout << std::dec << (j-2) << " bytes after the OFNI8." << std::endl;
 
 			}
 
-			// cout << std::put_time(&time, "%c") << endl;
-			// cout << std::hex << i << endl;
-
-			// cout << ctime(&chrono);
-			// cout << "year: ";
-			// cout << year+1900;
-			// cout << "day: ";
-			// cout << day;
-			// cout << &buffer1 << endl;
-			// cout << *buffer1;
 			// sleep(1);
 			i++;
 			j++;
