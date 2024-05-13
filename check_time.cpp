@@ -1,3 +1,18 @@
+/*
+Program: separate_sign.cpp
+ITEP-RN
+Developed by Julio Freire
+Supervised by Jossergio Gouveia <<<<<<< TO CHECK, PLEASE!
+Last update: 13/05/2024
+Version: 0.0.01
+
+Describe:
+This program find dates contained in IDR tables, that is located in the final of each block of date
+of a Hikvision FileSystem, marked by OFNI8 signature. This can be useful to search slices of video 
+
+or some fragments of data.
+*/
+
 #include <iostream>
 #include <fstream>
 #include <time.h>
@@ -8,6 +23,23 @@
 #include <iomanip>
 using namespace std;
 
+/*
+Verify the call of the programa with the correct parameters, if not just terminate the program.
+*/
+void Usage (char* prog_name) {
+	std::cerr << "Usage: " << prog_name <<": Must be use two arguments:"
+	" <inputfile> <date>" << std::endl;
+	std::cout << "To see the correct format of date, open the source code." std::endl;
+	exit(0);
+}
+
+/*
+As known that computer store a int value in a sequence and the processor read it in reverse and it
+way to read is called little endian, so this function just read the mirror of a number in hex of 4bytes.
+
+Argument:	string
+Return:		string
+*/
 string read_little_endian(string hex){
 	char tmp = hex[0];
 	hex[0] = hex[6];
@@ -28,6 +60,14 @@ string read_little_endian(string hex){
 	return hex;
 }
 
+/*
+How the binary of a file is read as hexadecimal, to search a possible timestamp through the hex
+was necessary to convert 4 bytes of hexas to a int value in order to later convert it for readable
+date.
+
+Arguments:	string
+Return:		time_t
+*/
 time_t hex_to_time(std::string hex_date) {
     // Convert hexadecimal string to integer
     std::istringstream iss(hex_date);
@@ -40,6 +80,12 @@ time_t hex_to_time(std::string hex_date) {
     return time_value;
 }
 
+/*
+In the struct tm the days of week is read as numbers from 0 to 6, which 0 is Sunday and 6 is Saturday.
+
+Arguments:	string
+Return:		int
+*/
 int convert_days_to_num(std::string wday){
 	if ( wday == "dom" || wday == "Dom"){
 		return 0;
@@ -57,6 +103,13 @@ int convert_days_to_num(std::string wday){
 
 }
 
+/*
+To read the data is necessary to open as a pointer to char, so to do a better interpretation of 
+the dates, it was converted to struct tm and processed.
+
+Arguments:	string
+Return:		tm
+*/
 tm convert_to_tm(std::string date){
 	std::istringstream iss(date);
 	std::tm date_tm{};
@@ -76,6 +129,13 @@ tm convert_to_tm(std::string date){
 	return date_tm;
 }
 
+/*
+Function that is used to show only the date passed by argument when the program is executed.
+
+Arguments:	tm
+			tm
+Return:		bool
+*/
 bool compare_dates(tm date_to_compare, tm date){
 
 	if (date_to_compare.tm_mday == date.tm_mday){
@@ -101,7 +161,20 @@ bool compare_dates(tm date_to_compare, tm date){
 	return false;
 }
 
+/*
+The main purpose of this program is search along the file possibles dates that can be useful to 
+analysis and extract some slices.
+
+Arguments:	<IDR_FILES>
+			date in the following format: "day month year weekday hour minute seconds", in example:
+			"18 03 2020 qua 18 28 46"
+Return:		
+*/
 int main (int argc, char* args[]){
+
+	if (argc != 3){
+		Usage(args[0]);
+	}
 
 	// preparing args
 	string inputfile_path = args[1];
