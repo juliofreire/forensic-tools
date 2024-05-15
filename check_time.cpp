@@ -9,7 +9,6 @@ Version: 0.0.01
 Describe:
 This program find dates contained in IDR tables, that is located in the final of each block of date
 of a Hikvision FileSystem, marked by OFNI8 signature. This can be useful to search slices of video 
-
 or some fragments of data.
 */
 
