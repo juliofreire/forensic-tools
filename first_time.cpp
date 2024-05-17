@@ -1,3 +1,5 @@
+// TODO: FORMALIZE THIS PROGRAM, ADD DESCIBRE AND SHOW HEX AS DATE
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
