@@ -35,9 +35,13 @@ char* next_string(char* buffer_actual, char* buffer_end) {
 
 int main(int argc, char* argv[]){
 
-	string path(argv[1]);
+	string inputfile_path(argv[1]);
+	string outputfile_path(argv[2]);
 
-	ifstream inputfile(path, ifstream::binary);
+	cout << outputfile_path+"/dates.csv" << endl;
+
+	ifstream inputfile(inputfile_path, ifstream::binary);
+	ofstream outputfile(outputfile_path+"/dates.csv", fstream::app);
 
 	if(inputfile.good()){
 		inputfile.seekg(0, inputfile.end);
@@ -55,18 +59,21 @@ int main(int argc, char* argv[]){
 		int buffer_size;
 	
 		buffer1 = next_string(buffer1, buffer_end);
+
 		char *c = buffer1;
 		while(c != nullptr){
 			buffer1 = c;
 			c = next_string(c+1, buffer_end);
 		}
 		
-		buffer_size = buffer1-buffer;
+		buffer_size = buffer1-c;
 		cout << buffer_size << endl;
 
 		for (int i = 24; i < 28; i++){
-			cout << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[i];
+			outputfile << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[i];
 		}
+		outputfile << "\n";
+
 		delete[] buffer;
 	}	
 
