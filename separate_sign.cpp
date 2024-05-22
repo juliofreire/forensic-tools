@@ -1,4 +1,4 @@
-cd /*
+/*
 Program: separate_sign.cpp
 ITEP-RN
 Developed by Julio Freire

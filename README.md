@@ -23,3 +23,5 @@ With a slice that contains all the signatures (or strings), it will separate the
 The first analysis is check some pattern of timestamps in phrases marked by a signature.
 
 Look this is a sequence of steps.
+
+In future, I will discuss the uses of each program in more detail, as some are designed to ensure some suspicious of what information is contained in each file. So, to guide the readers (and even me sometimes :D) I will review all codes and create a better flow. Any question, fell free to ask me (even you Julio).
