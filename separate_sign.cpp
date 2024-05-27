@@ -50,11 +50,11 @@ char* next_string(char* buffer_actual, char* buffer_end) {
 		bool ci = (buffer_actual + 3) < buffer_end ? *(buffer_actual + 3) == 'I': false;
 		bool c8 = (buffer_actual + 4) < buffer_end ? *(buffer_actual + 4) == '8': false;
 		bool match_ofni8 = cf && cn && ci && c8;
-		if (match_ofni8) break;
+		if (match_ofni8) return buffer_actual;
 		buffer_actual++;
 		length_search = buffer_end - buffer_actual;
 	}
-		return buffer_actual;
+		return nullptr;
 
 }
 

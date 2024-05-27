@@ -17,14 +17,36 @@ string binaryToHex(const char* buffer, int length){
 
 string rangeInSeconds(const string date, int sizeRange){
 	string substrdate = date.substr(0,2);
+	string subsubstrdate = date.substr(2,2);
+
+	cout << substrdate;
+	cout << subsubstrdate;
+	cout << endl;
 	ostringstream oss;
-	int seconds = stol(substrdate, 0, 16);
-	oss << hex << seconds+sizeRange << endl;
+	int twoinit = stol(substrdate, 0, 16);
+	int fourinit = stol(subsubstrdate, 0, 16);
+
+	// cout << twoinit << endl;
+	// cout << fourinit << endl;
+	int all_number = fourinit*256+twoinit;
+// CORRIGIR O 0 QUE NAO APARECE COMO COMPLEMENTO, POR EXEMPLO 0A33 ESTA APARECENDO APENAS A33
+	cout << hex << all_number+sizeRange << std::left << setfill('0') << setw(2) << endl;
+	oss << hex << all_number+sizeRange << std::left << setfill('0') << setw(2) << endl;
+	cout << "oss: ";
+	cout << oss.str() << endl;
+
 	substrdate = oss.str()[0];
 	substrdate += oss.str()[1];
-	substrdate.append(date.substr(2,8));
 
-	return substrdate;
+	subsubstrdate = oss.str()[2];
+	subsubstrdate += oss.str()[3];
+
+	subsubstrdate.append(substrdate.substr(0,2));
+	subsubstrdate.append(date.substr(4,8));
+
+	cout << "ok: " << subsubstrdate << endl;
+
+	return subsubstrdate;
 }
 
 string takeDates(const string data, const int length){
@@ -63,7 +85,7 @@ string searchChannels(const string date, const string bufferHex, const int lengt
 	if(found) break;
 	j++;	
 	}
-	return NULL;
+	return "NULL";
 }
 
 
@@ -74,7 +96,8 @@ int main (int argc, char* argv[]){
 
 	ifstream inputfile(inputfile_path, ifstream::binary);
 	ifstream comparefile(comparefile_path);
-	if inputfile.good(){
+	
+	if (inputfile.good()){
 		if (comparefile.good()){
 		} else{
 			cout << "Could'nt read the comparefile" << endl;
@@ -90,7 +113,7 @@ int main (int argc, char* argv[]){
 	inputfile.seekg(0, inputfile.beg);
 
 	char* buffer1 = new char [length1];
-	char* buffer2 = new char [length1];
+	// char* buffer2 = new char [length1];
 	inputfile.read(buffer1, length1);
 
 	string bufferHex = binaryToHex(buffer1, length1);
@@ -113,7 +136,7 @@ int main (int argc, char* argv[]){
 	cout << endl;
 	for (int i = 0; i<length2-2; i+=9){
 		string subdata = data.substr(i,8);
-		searchChannels(subdata, bufferHex, length1, 8);
+		searchChannels(subdata, bufferHex, length1, 20);
 		cout << subdata << endl;
 	}
 	

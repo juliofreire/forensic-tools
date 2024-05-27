@@ -21,16 +21,17 @@ char* next_string(char* buffer_actual, char* buffer_end) {
 	while (buffer_actual < buffer_end) {
 		buffer_actual = (char*) memchr (buffer_actual, 'O', length_search);
 		if (buffer_actual == nullptr) break;
+
 		bool cf = (buffer_actual + 1) < buffer_end ? *(buffer_actual + 1) == 'F': false;
 		bool cn = (buffer_actual + 2) < buffer_end ? *(buffer_actual + 2) == 'N': false;
 		bool ci = (buffer_actual + 3) < buffer_end ? *(buffer_actual + 3) == 'I': false;
 		bool c8 = (buffer_actual + 4) < buffer_end ? *(buffer_actual + 4) == '8': false;
 		bool match_ofni8 = cf && cn && ci && c8;
-		if (match_ofni8) break;
+		if (match_ofni8) return buffer_actual;
 		buffer_actual++;
 		length_search = buffer_end - buffer_actual;
 	}
-		return buffer_actual;
+		return nullptr;
 
 }
 
@@ -63,13 +64,27 @@ int main(int argc, char* argv[]){
 		buffer1 = next_string(buffer1, buffer_end);
 
 		char *c = buffer1;
-		while(c != nullptr){
+
+		streamsize skip = 0;		
+		while(skip < length){
 			buffer1 = c;
 			c = next_string(c+1, buffer_end);
+			if (c == nullptr) break;
+			skip += c-buffer1;
 		}
-		
-		buffer_size = buffer1-c;
-		cout << buffer_size << endl;
+		ostringstream tmp_check;
+		tmp_check << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[27];
+
+		streamsize test = 0;
+		if(tmp_check.str() != "5e"){
+			c = buffer;
+			while(test < skip){
+			buffer1 = c;
+			c = next_string(c+1, buffer_end-skip);
+			test += c-buffer1;
+			}
+		}
+
 
 		for (int i = 24; i < 28; i++){
 			outputfile << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[i];

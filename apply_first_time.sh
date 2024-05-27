@@ -12,6 +12,8 @@ fi
 
 for seq in $source_dir*.dd
 do
+	
 	echo $seq
 	./first_time.o $seq .
+
 done

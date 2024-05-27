@@ -12,6 +12,9 @@ destine=$3/headers
 # Create a directory to store the output
 mkdir -p $destine
 
+IFS="
+"
+
 i=1
 for block in $directory*.dd
 do
@@ -23,7 +26,7 @@ do
 	echo "$string was found in address: $address"
 	skip_blocks=$(($address / 2048))
 	echo "The dd comand must skip $skip_blocks blocks"
-	dd if=$block of=$destine/"seq"$i.dd bs=2048 skip=$skip_blocks
+	dd if=$block of=$destine/"seq"$(printf %06d $i).dd bs=2048 skip=$skip_blocks
 	echo "Finish block number $i"
 	i=$(($i+1))
 done
