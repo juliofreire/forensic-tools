@@ -19,21 +19,13 @@ string rangeInSeconds(const string date, int sizeRange){
 	string substrdate = date.substr(0,2);
 	string subsubstrdate = date.substr(2,2);
 
-	cout << substrdate;
-	cout << subsubstrdate;
-	cout << endl;
 	ostringstream oss;
 	int twoinit = stol(substrdate, 0, 16);
 	int fourinit = stol(subsubstrdate, 0, 16);
 
-	// cout << twoinit << endl;
-	// cout << fourinit << endl;
-	int all_number = fourinit*256+twoinit;
-// CORRIGIR O 0 QUE NAO APARECE COMO COMPLEMENTO, POR EXEMPLO 0A33 ESTA APARECENDO APENAS A33
-	cout << hex << all_number+sizeRange << std::left << setfill('0') << setw(2) << endl;
-	oss << hex << all_number+sizeRange << std::left << setfill('0') << setw(2) << endl;
-	cout << "oss: ";
-	cout << oss.str() << endl;
+	int all_number = (fourinit << 8) + twoinit;
+	int new_number = all_number + sizeRange;
+	oss << hex << setw(4) << setfill('0') << new_number << endl;
 
 	substrdate = oss.str()[0];
 	substrdate += oss.str()[1];
@@ -43,8 +35,6 @@ string rangeInSeconds(const string date, int sizeRange){
 
 	subsubstrdate.append(substrdate.substr(0,2));
 	subsubstrdate.append(date.substr(4,8));
-
-	cout << "ok: " << subsubstrdate << endl;
 
 	return subsubstrdate;
 }
