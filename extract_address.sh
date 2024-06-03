@@ -15,7 +15,7 @@ mkdir -p $destine
 IFS="
 "
 
-i=1
+i=1276
 for block in $directory*.dd
 do
 
@@ -26,6 +26,9 @@ do
 	echo "$string was found in address: $address"
 	skip_blocks=$(($address / 2048))
 	echo "The dd comand must skip $skip_blocks blocks"
+	while test -f $destine/"seq"$(printf %06d $i) ; do
+		i=$(($i+1))
+	done
 	dd if=$block of=$destine/"seq"$(printf %06d $i).dd bs=2048 skip=$skip_blocks
 	echo "Finish block number $i"
 	i=$(($i+1))

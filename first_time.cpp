@@ -43,6 +43,8 @@ int main(int argc, char* argv[]){
 
 	cout << outputfile_path+"/dates.csv" << endl;
 
+	cout << "okok";
+
 	ifstream inputfile(inputfile_path, ifstream::binary);
 	ofstream outputfile(outputfile_path+"/dates.csv", fstream::app);
 
@@ -64,7 +66,7 @@ int main(int argc, char* argv[]){
 		buffer1 = next_string(buffer1, buffer_end);
 
 		char *c = buffer1;
-
+		cout << "okok";
 		streamsize skip = 0;		
 		while(skip < length){
 			buffer1 = c;
@@ -73,6 +75,7 @@ int main(int argc, char* argv[]){
 			skip += c-buffer1;
 		}
 		ostringstream tmp_check;
+
 		tmp_check << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[27];
 
 		streamsize test = 0;

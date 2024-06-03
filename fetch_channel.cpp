@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <cstring>
 #include <unistd.h>
+#include <vector>
 
 
 using namespace std;
@@ -36,10 +37,12 @@ string rangeInSeconds(const string date, int sizeRange){
 	subsubstrdate.append(substrdate.substr(0,2));
 	subsubstrdate.append(date.substr(4,8));
 
+	// cout << subsubstrdate << endl;
+
 	return subsubstrdate;
 }
 
-string takeDates(const string data, const int length){
+string takeDates(const string& data, int length){
 	string subdata;
 	for (int i = 0; i<length-2; i+=9){
 		subdata = data.substr(i,8);
@@ -48,7 +51,8 @@ string takeDates(const string data, const int length){
 	return subdata;
 }
 
-string searchChannels(const string date, const string bufferHex, const int length, const int sizeRange){
+vector<string> searchChannels(const string& date, const string& bufferHex, int length, int sizeRange){
+	vector<string> vect{date, "NULL"};
 	int index;
 	bool found = false;
 	int j = (sizeRange/2)*(-1);
@@ -62,20 +66,22 @@ string searchChannels(const string date, const string bufferHex, const int lengt
 				cout << "Find for date:" << date_tmp << endl;
 				index = i;
 				string channel;
-				// channel = bufferHex[index-22];
-				// channel += bufferHex[index-21];
+				channel = bufferHex[index-22];
+				channel += bufferHex[index-21];
 				cout << "The channel is:";
-
-				cout << bufferHex[index-22];
-				cout << bufferHex[index-21] << endl;
-				return channel;
+				cout << channel << endl;
+				// cout << bufferHex[index-22];
+				// cout << bufferHex[index-21] << endl;
+				vect[0] = date_tmp;
+				vect[1] = channel;
+				return vect;
 				// break;
 			}
 		}
 	if(found) break;
 	j++;	
 	}
-	return "NULL";
+	return vect;
 }
 
 
@@ -86,6 +92,7 @@ int main (int argc, char* argv[]){
 
 	ifstream inputfile(inputfile_path, ifstream::binary);
 	ifstream comparefile(comparefile_path);
+	ofstream outputfile("dates_ch.csv", fstream::app);
 	
 	if (inputfile.good()){
 		if (comparefile.good()){
@@ -126,8 +133,15 @@ int main (int argc, char* argv[]){
 	cout << endl;
 	for (int i = 0; i<length2-2; i+=9){
 		string subdata = data.substr(i,8);
-		searchChannels(subdata, bufferHex, length1, 20);
-		cout << subdata << endl;
+		vector<string> data_ch = {searchChannels(subdata, bufferHex, length1, 58)};
+		outputfile << data_ch[0];
+		outputfile << ", ";
+		outputfile << data_ch[1];
+		outputfile << "\n";
+
+		cout << data_ch[0] << endl;
+		cout << data_ch[1] << endl;
+		// cout << subdata << endl;
 	}
 	
 
