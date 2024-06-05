@@ -3,10 +3,43 @@
 #include <iomanip>
 #include <cstring>
 #include <unistd.h>
+#include <ctime>
 #include <vector>
 
 
 using namespace std;
+
+time_t hex_to_time(string hex_date) {
+    // Convert hexadecimal string to integer
+    istringstream iss(hex_date);
+    unsigned long long int_value;
+    iss >> hex >> int_value;
+
+    // Convert integer to time_t
+    time_t time_value = int_value;
+
+    return time_value;
+}
+
+string read_little_endian(string hex){
+	char tmp = hex[0];
+	hex[0] = hex[6];
+	hex[6] = tmp;
+
+	tmp = hex[1];
+	hex[1] = hex[7];
+	hex[7] = tmp;
+
+	tmp = hex[2];
+	hex[2] = hex[4];
+	hex[4] = tmp;
+
+	tmp = hex[3];
+	hex[3] = hex[5];
+	hex[5] = tmp;
+
+	return hex;
+}
 
 string binaryToHex(const char* buffer, int length){
 	ostringstream oss;
@@ -128,19 +161,26 @@ int main (int argc, char* argv[]){
 	comparefile.read(buffer2, length2);
 
 	string data(buffer2);
-	cout << endl;
-	cout << length2;
-	cout << endl;
+	tm time;
+	time_t chrono;
 	for (int i = 0; i<length2-2; i+=9){
 		string subdata = data.substr(i,8);
 		vector<string> data_ch = {searchChannels(subdata, bufferHex, length1, 58)};
+		chrono = hex_to_time(read_little_endian(data_ch[0]));
+		time = *localtime(&chrono);
+
 		outputfile << data_ch[0];
 		outputfile << ", ";
+		outputfile << time.tm_mday << "-" << time.tm_mon << "-" << time.tm_year+1900 << "-";
+		outputfile << time.tm_hour-3 << "-" << time.tm_min << "-" << time.tm_sec;
+		outputfile << ", ";
 		outputfile << data_ch[1];
+		outputfile << ", ";
+		outputfile << stoi(data_ch[1], nullptr, 16);
 		outputfile << "\n";
 
-		cout << data_ch[0] << endl;
-		cout << data_ch[1] << endl;
+		// cout << data_ch[0] << endl;
+		// cout << data_ch[1] << endl;
 		// cout << subdata << endl;
 	}
 	

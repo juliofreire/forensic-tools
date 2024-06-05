@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cstring>
 #include <iomanip>
+#include <unistd.h>
 
 using namespace std;
 
@@ -16,12 +17,11 @@ Arguments	: *char
 			  *char
 Return Type	: *char
 */
-char* next_string(char* buffer_actual, char* buffer_end) {
+char* next_string(char* buffer_actual, const char* buffer_end) {
 	int length_search = buffer_end - buffer_actual;
 	while (buffer_actual < buffer_end) {
 		buffer_actual = (char*) memchr (buffer_actual, 'O', length_search);
 		if (buffer_actual == nullptr) break;
-
 		bool cf = (buffer_actual + 1) < buffer_end ? *(buffer_actual + 1) == 'F': false;
 		bool cn = (buffer_actual + 2) < buffer_end ? *(buffer_actual + 2) == 'N': false;
 		bool ci = (buffer_actual + 3) < buffer_end ? *(buffer_actual + 3) == 'I': false;
@@ -43,58 +43,60 @@ int main(int argc, char* argv[]){
 
 	cout << outputfile_path+"/dates.csv" << endl;
 
-	cout << "okok";
 
 	ifstream inputfile(inputfile_path, ifstream::binary);
 	ofstream outputfile(outputfile_path+"/dates.csv", fstream::app);
 
-	if(inputfile.good()){
-		inputfile.seekg(0, inputfile.end);
-		int length = inputfile.tellg();
-		inputfile.seekg(0, inputfile.beg);
 
-		char* buffer = new char [length];
-		char* buffer1 = buffer;
-		char* buffer_end = buffer+length-1;
-
-		inputfile.read(buffer, length);
-
-		cout << inputfile.good() << endl;
-
-		int buffer_size;
-	
-		buffer1 = next_string(buffer1, buffer_end);
-
-		char *c = buffer1;
-		cout << "okok";
-		streamsize skip = 0;		
-		while(skip < length){
-			buffer1 = c;
-			c = next_string(c+1, buffer_end);
-			if (c == nullptr) break;
-			skip += c-buffer1;
+	if (inputfile.good()){
+		if (outputfile.good()){
+		} else{
+			std::cout << "Could'nt read the outfile " << outputfile_path << std::endl;
+			inputfile.close();
+			return 1;
 		}
-		ostringstream tmp_check;
+	} else {
+		std::cout << "Could'nt read the inputfile " << inputfile_path << std::endl;
+		return 1;
+	}
 
-		tmp_check << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[27];
+	inputfile.seekg(0, inputfile.end);
+	int length = inputfile.tellg();
+	inputfile.seekg(0, inputfile.beg);
 
-		streamsize test = 0;
-		if(tmp_check.str() != "5e"){
-			c = buffer;
-			while(test < skip){
-			buffer1 = c;
-			c = next_string(c+1, buffer_end-skip);
-			test += c-buffer1;
-			}
+	char* buffer = new char [length];
+	char* buffer1 = buffer;
+	char* buffer_end = buffer+length-1;
+
+	inputfile.read(buffer, length);
+	char* c = next_string(buffer, buffer_end);
+	int initial_skip = c-buffer1;
+	streamsize skip = 0;		
+	while(skip < length){
+		buffer1 = c;
+		c = next_string(c+1, buffer_end);
+		if (c == nullptr) break;
+		skip += c-buffer1;
+	}
+	ostringstream tmp_check;
+	tmp_check << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[27];
+
+	c = buffer;
+
+	streamsize test = 0;
+	if(tmp_check.str() != "5e"){
+		
+		while(test < skip+initial_skip){
+		buffer1 = c;
+		c = next_string(c+1, buffer_end);
+		test += c-buffer1;
 		}
+	}
 
+	for (int i = 24; i < 28; i++){
+		outputfile << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[i];
+	}
+	outputfile << "\n";
 
-		for (int i = 24; i < 28; i++){
-			outputfile << std::hex << std::setw(2) << setfill('0') << (int)(unsigned char)buffer1[i];
-		}
-		outputfile << "\n";
-
-		delete[] buffer;
-	}	
-
+	delete[] buffer;
 }
