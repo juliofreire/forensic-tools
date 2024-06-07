@@ -1,0 +1,1 @@
+All the offset of datablocks contained in hikbtree must be subtract by 4C55E00 because the problem in HDD. It was a failure of storage without a plausible reason that the initial address is shifted by the valeu 4C55E00.
