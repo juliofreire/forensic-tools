@@ -54,10 +54,23 @@ The table to convert a weekday in English to Portuguese:
 
 ### 5. First_time (.cpp)
 
+The aim of this program is catch the first valid OFNI8 that has a timestamp in the phrase and it will be used in the next step. The result is a .csv file that contains the date.
 
-I will complete it soon!!
+To compile: g++ first_time.cpp -o first_time.o
 
+To run: ./first_time.o <inputfile_path> 
 
+**Ps: The recomendation is used the apply_first_time.sh**
+
+### 6. Apply_first_time (.sh)
+
+It will apply the program above in whole directory.
+
+To run: ./apply_first_time.sh <directory_files>
+
+### 7. Fetch_channel (.cpp)
+
+To finalize all the steps, this program will do a search through a HIKBTREE to match the dates in dates.csv and fetch the correspondig channels, creating a new file with the following struct: dates in hex, dates readable, channels in hex, channels readable.
 
 Look this is a sequence of steps.
 
