@@ -72,6 +72,9 @@ To run: ./apply_first_time.sh <directory_files>
 
 To finalize all the steps, this program will do a search through a HIKBTREE to match the dates in dates.csv and fetch the correspondig channels, creating a new file with the following struct: dates in hex, dates readable, channels in hex, channels readable.
 
+
+All the programs was used to test and confirm suspects of information presents in the data of HDD of Hikvision FileSystem. The entire project was possible thanks a article Analysis of the HIKVISION DVR file system of Han, Jeong and Lee and DOI: 10.1007/978-3-319-25512-5_13.
+
 Look this is a sequence of steps.
 
 In future, I will discuss the uses of each program in more detail, as some are designed to ensure some suspicious of what information is contained in each file. So, to guide the readers (and even me sometimes :D) I will review all codes and create a better flow. Any question, fell free to ask me (even you Julio).
