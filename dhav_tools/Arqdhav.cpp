@@ -2,16 +2,32 @@
 #include <unistd.h>
 
 
-Arqdhav::Arqdhav()
+Arqdhav::Arqdhav(const string& path)
 {
-	buffer_init = nullptr;
-	length = 0;
+	this->path = path;
+
+	if (!dirExist(path)){
+		cerr << "Diretorio nao existe" << endl;
+		exit(0);
+	}
+
+	inputfile = new ifstream(path, ifstream::binary);
+	setLength();
+	setBuffer();
+
+	// glue
+	// int* i = new int(10);
+	// cout << *i << endl;
+	// delete i;
 }
+
 
 
 Arqdhav::~Arqdhav()
 {
-	delete[] buffer_init;
+	inputfile->close();
+	delete[] inputfile;
+	// delete[] buffer_init;
 }
 
 
@@ -20,11 +36,11 @@ bool Arqdhav::dirExist(const filesystem::path& path){
 }
 
 
-void Arqdhav::setLength(ifstream& inputfile)
+void Arqdhav::setLength()
 {
-	inputfile.seekg(0, inputfile.end);
-	length = inputfile.tellg();
-	inputfile.seekg(0, inputfile.beg);
+	inputfile->seekg(0, inputfile->end);
+	length = inputfile->tellg();
+	inputfile->seekg(0, inputfile->beg);
 }
 
 
@@ -34,54 +50,60 @@ int Arqdhav::getLength()
 }
 
 
-void Arqdhav::setBuffers(ifstream& inputfile){
-	buffer_init = new char [length];
-	inputfile.read(buffer_init, length);
-	buffer_end = buffer_init + length;
-	cout << buffer_init[0] << endl;
+void Arqdhav::setBuffer(){
+	// buffer_init = new char [length];
+	buffer = new Buffer();
+
+	inputfile->read(buffer->buffer_init, buffer->length_buffer);
+	// buffer_end = buffer_init + length;
+	// cout << buffer_init[0] << endl;
 
 }
 
 
-char* Arqdhav::getBuffers(){
-	return buffer_init;
-	// cout << buffer_end << endl;
-}
+// char* Arqdhav::getBuffers(){
+// 	return buffer_init;
+// 	// cout << buffer_end << endl;
+// }
 
 char* Arqdhav::nextString(char* buffer_atual)
 {
-	int length_search = buffer_end - buffer_atual;
-	cout << length_search << endl;
-	cout << buffer_atual[0] << endl;
-	while(buffer_atual < buffer_end)
+	int length_search = buffer->buffer_end - buffer_atual;
+	cout << length - length_search << endl;
+	// cout << buffer_atual[0] << endl;
+	while(buffer_atual < buffer->buffer_end)
 	{
 		// CHECK DHAVFD ------ IT'S NECESSARY LOOK THE PATTERNS OF DHAV
 		cout << length_search << endl;
+		cout << length - length_search << endl;
 		buffer_atual = (char*) memchr (buffer_atual, 'O', length_search);
 		if (buffer_atual == nullptr) break;
-		bool cH = (buffer_atual + 1) < buffer_end ? *(buffer_atual + 1) == 'F': false;
-		bool cA = (buffer_atual + 2) < buffer_end ? *(buffer_atual + 2) == 'N': false;
-		bool cV = (buffer_atual + 3) < buffer_end ? *(buffer_atual + 3) == 'I': false;
-		bool cF = (buffer_atual + 4) < buffer_end ? *(buffer_atual + 4) == '8': false;
-		bool cD = (buffer_atual + 5) < buffer_end ? *(buffer_atual + 5) == 'D': false;
-		bool match_pattern = cH && cA && cV; //&& cF// && cD;
+		bool cH = (buffer_atual + 1) < buffer->buffer_end ? *(buffer_atual + 1) == 'F' : false;
+		bool cA = (buffer_atual + 2) < buffer->buffer_end ? *(buffer_atual + 2) == 'N' : false;
+		bool cV = (buffer_atual + 3) < buffer->buffer_end ? *(buffer_atual + 3) == 'I' : false;
+		bool cFD = (buffer_atual + 4) < buffer->buffer_end ? *(buffer_atual + 4) == '8' : false;
+		bool c0 = (buffer_atual + 5) < buffer->buffer_end ? *(buffer_atual + 5) == 0   : false;
+		bool match_pattern = cH && cA && cV && cFD;// && c0;
 
 		if (match_pattern) return buffer_atual;
 
 		buffer_atual++;
 
-		length_search = buffer_end - buffer_atual;
+		length_search = buffer->buffer_end - buffer_atual;
 	}
 
 	return nullptr;
 }
 
-string Arqdhav::searchOffsets(ofstream& outputfile)
+void Arqdhav::searchOffsets(ofstream& outputfile)
 {
-	char* buffer_run_slow = nextString(buffer_init);
+	char* buffer_run_slow = nextString(buffer->buffer_init);
+	if (buffer_run_slow == nullptr){
+		cout << "String nao encontrada" << endl;
+		exit(0);
+	}
 	char* buffer_run_fast = buffer_run_slow;
-	cout << endl;
-	while(buffer_run_fast < buffer_end)
+	while(buffer_run_fast < buffer->buffer_end)
 	{
 		buffer_run_fast = nextString(buffer_run_fast+1);
 
@@ -92,5 +114,5 @@ string Arqdhav::searchOffsets(ofstream& outputfile)
 
 		// cout << "mais uma volta";
 	}
-	return "ok";
+	cout << "Programa rodado e strings encontradas" << endl;
 }
