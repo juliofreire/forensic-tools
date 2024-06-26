@@ -30,6 +30,7 @@ private:
 	//================ Setting ===============
 	void setLength();
 	void setBuffer();
+	void updateBuffer(int, char*);
 	// void setBuffers();
 
 public:
