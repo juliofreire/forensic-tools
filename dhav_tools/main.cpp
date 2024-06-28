@@ -20,9 +20,10 @@ int main (){
 	ifstream inputfile(path, ifstream::binary);
 	ofstream outputfile(outpath);
 
-	int length =  arq.getLength();
+	long long int length =  arq.getLength();
+	cout << "tamanho:" << length << endl;
 
-	arq.searchOffsets(outputfile);
+	arq.exec(outputfile);
 
 	// cout << "estou aqui?" << endl;
 

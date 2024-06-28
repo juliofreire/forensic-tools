@@ -19,19 +19,16 @@ private:
 
 	// char* buffer_init = nullptr;
 	// char* buffer_end = nullptr;
-	Buffer* buffer;
-	int length = 0;
+	// Buffer* buffer;
+	Buffer buffer;
+	long long int length_arq = 0;
 	int offset = 0; // acumulator of offsets read in searchOffsets
 	string path;
 	ifstream* inputfile = nullptr;
 
 	//================ Functions =============
 
-	//================ Setting ===============
-	void setLength();
-	void setBuffer();
-	void updateBuffer(int, char*);
-	// void setBuffers();
+
 
 public:
 
@@ -41,17 +38,23 @@ public:
 	Arqdhav() = delete;
 	~Arqdhav();
 
+	//================ Settings ===============
+	void setLength();
+	
+	// void setBuffers();
+
 	//================ Validations ===========
 	bool dirExist(const filesystem::path&);
 
 	//================ Utilites ==============
 	
-	int getLength();
-	// char* getBuffers();
+	long long int getLength();
 
 	//================ Main Functions ========
-	char* nextString(char*);
-	void searchOffsets(ofstream&);
+	// bool compareString(char*, char*);
+	// char* nextString(char*);
+	// void searchOffsets(ofstream&);
+	void exec(/*ifstream&,*/ ofstream&/*, long long int*/);
 
 
 	/*
