@@ -49,6 +49,6 @@ long long int Arqdhav::getLength()
 
 void Arqdhav::exec(/*ifstream& inputfile = this->inputfile,*/ ofstream& outpufile/*, long long int length_arq = this->length_arq*/)
 {
-	buffer.searchOffsets(*inputfile, outpufile, length_arq);
+	buffer.searchInWindow(*inputfile, outpufile, length_arq);
 }
 

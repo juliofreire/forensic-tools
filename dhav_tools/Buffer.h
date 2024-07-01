@@ -15,8 +15,10 @@ class Buffer
 private:
 
 	long int length_buffer;
+	long long int char_read = 0;
 	char* buffer_init = nullptr;
 	char* buffer_end = nullptr;
+
 
 public:
 
@@ -36,7 +38,8 @@ public:
 	//================ Main Functions ========
 	bool compareString(char*, char*);
 	char* nextString(char*, long long int);
-	void searchOffsets(ifstream&, ofstream&, long long int);
+	void searchInWindow(ifstream&, ofstream&, long long int);
+	void rotateWindow(ifstream&, char*, long long int, int);
 
 };
 
