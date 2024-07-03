@@ -14,7 +14,7 @@ class Buffer
 
 private:
 
-	long int length_buffer;
+	int length_buffer;
 	long long int char_read = 0;
 	char* buffer_init = nullptr;
 	char* buffer_end = nullptr;
@@ -26,20 +26,20 @@ public:
 	Buffer();
 	~Buffer();
 
-	long int getLength();
+	int getLength();
 	char* getBufferInit();
 	char* getBufferEnd();
 
 	//================ Settings ===============
 	void setBuffer(ifstream&);
-	void updateBuffer(int, char*);
+	// void updateBuffer(int, char*);
 
 
 	//================ Main Functions ========
 	bool compareString(char*, char*);
 	char* nextString(char*, long long int);
 	void searchInWindow(ifstream&, ofstream&, long long int);
-	void rotateWindow(ifstream&, char*, long long int, int);
+	char* rotateWindow(ifstream&, char*, long long int, int);
 
 };
 
