@@ -5,7 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include <cstring>
-#include "Buffer.h"
+// #include "Buffer.h"
 
 using namespace std;
 
@@ -19,10 +19,8 @@ private:
 
 	// char* buffer_init = nullptr;
 	// char* buffer_end = nullptr;
-	// Buffer* buffer;
-	Buffer buffer;
+	// Buffer buffer;
 	long long int length_arq = 0;
-	int offset = 0; // acumulator of offsets read in searchOffsets
 	string path;
 	ifstream* inputfile = nullptr;
 
@@ -33,13 +31,13 @@ private:
 public:
 
 
-	//================ Constr e Destr ========
+	//================ Constr e Destr =========
 	Arqdhav(const string&);
-	Arqdhav() = delete;
 	~Arqdhav();
 
 	//================ Settings ===============
 	void setLength();
+	void read(char*, int);
 	
 	// void setBuffers();
 
@@ -47,14 +45,9 @@ public:
 	bool dirExist(const filesystem::path&);
 
 	//================ Utilites ==============
-	
 	long long int getLength();
+	ifstream& getFile();
 
-	//================ Main Functions ========
-	// bool compareString(char*, char*);
-	// char* nextString(char*);
-	// void searchOffsets(ofstream&);
-	void exec(/*ifstream&,*/ ofstream&/*, long long int*/);
 
 
 	/*

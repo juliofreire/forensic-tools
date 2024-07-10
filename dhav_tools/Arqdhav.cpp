@@ -47,8 +47,12 @@ long long int Arqdhav::getLength()
 	return length_arq;
 }
 
-void Arqdhav::exec(/*ifstream& inputfile = this->inputfile,*/ ofstream& outpufile/*, long long int length_arq = this->length_arq*/)
+void Arqdhav::read(char* initAddress, int length)
 {
-	buffer.searchInWindow(*inputfile, outpufile, length_arq);
+	inputfile->read(initAddress, length);
 }
 
+ifstream& Arqdhav::getFile()
+{
+	return *inputfile;
+}

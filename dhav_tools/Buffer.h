@@ -5,7 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include <cstring>
-// #include "Arqdhav.h"
+#include "Arqdhav.h"
 
 using namespace std;
 
@@ -14,32 +14,34 @@ class Buffer
 
 private:
 
-	int length_buffer;
+	int length_buffer = 1000;
 	long long int char_read = 0;
 	char* buffer_init = nullptr;
 	char* buffer_end = nullptr;
 
+	string path;
+	Arqdhav* arqdhav = nullptr;
+
 
 public:
 
-// public:
-	Buffer();
+	//================ Constr e Destr =========
+	Buffer(Arqdhav&);
 	~Buffer();
 
+	//================ Gettings ===============
 	int getLength();
 	char* getBufferInit();
 	char* getBufferEnd();
 
 	//================ Settings ===============
-	void setBuffer(ifstream&);
-	// void updateBuffer(int, char*);
-
+	void setBuffer(/*ifstream&*/);
 
 	//================ Main Functions ========
 	bool compareString(char*, char*);
-	char* nextString(char*, long long int);
-	void searchInWindow(ifstream&, ofstream&, long long int);
-	char* rotateWindow(ifstream&, char*, long long int, int);
+	char* nextString(char*);
+	void searchInWindow();
+	char* rotateWindow(int);
 
 };
 

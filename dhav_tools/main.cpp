@@ -17,13 +17,20 @@ int main (){
 
 	cout << "The program is processing the following file: " << path << endl;
 
-	ifstream inputfile(path, ifstream::binary);
-	ofstream outputfile(outpath);
+	// ifstream inputfile(path, ifstream::binary);
+	// ofstream outputfile(outpath);
 
 	long long int length =  arq.getLength();
 	cout << "tamanho:" << length << endl;
 
-	arq.exec(outputfile);
+	Buffer buf(arq);
+
+	// arq.read(buf.getBufferInit(), 200);
+
+	// cout << buf.getBufferInit() << endl;
+
+	buf.searchInWindow();
+	// arq.exec(outputfile);
 
 	// cout << "estou aqui?" << endl;
 
