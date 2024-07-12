@@ -23,7 +23,7 @@ int main (){
 	long long int length =  arq.getLength();
 	cout << "tamanho:" << length << endl;
 
-	Buffer buf(arq);
+	Buffer buf(&arq);
 
 	// arq.read(buf.getBufferInit(), 200);
 

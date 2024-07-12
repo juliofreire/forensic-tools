@@ -26,7 +26,7 @@ private:
 public:
 
 	//================ Constr e Destr =========
-	Buffer(Arqdhav&);
+	Buffer(Arqdhav*);
 	~Buffer();
 
 	//================ Gettings ===============
@@ -42,6 +42,7 @@ public:
 	char* nextString(char*);
 	void searchInWindow();
 	char* rotateWindow(int);
+	
 
 };
 

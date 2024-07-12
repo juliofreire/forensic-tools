@@ -1,19 +1,19 @@
 #include "Buffer.h"
 #include <unistd.h>
 
-Buffer::Buffer(Arqdhav &arqdhav)
+Buffer::Buffer(Arqdhav* arqdhav)
 {
 	buffer_init = new char[length_buffer];
 	buffer_end = buffer_init + length_buffer;
 
-	this->arqdhav = &arqdhav;
+	this->arqdhav = arqdhav;
 
 }
 
 
 Buffer::~Buffer()
 {
-	// delete[] buffer_init;
+	delete[] buffer_init;
 }
 
 
