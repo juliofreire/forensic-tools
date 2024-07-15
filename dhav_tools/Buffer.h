@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <cstring>
 #include "Arqdhav.h"
+#include "Phrase.h"
 
 using namespace std;
 

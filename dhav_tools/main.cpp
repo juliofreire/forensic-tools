@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Arqdhav.h"
 #include "Buffer.h"
+#include "Phrase.h"
 
 
 

@@ -34,6 +34,7 @@ char* Buffer::getBufferEnd()
 	return buffer_end;
 }
 
+
 void Buffer::setBuffer(){
 	arqdhav->read(getBufferInit(), getLength());
 }
@@ -106,7 +107,7 @@ void Buffer::searchInWindow()
 	char* buffer_run_fast = buffer_run_slow;
 	cout << "lidos: " << char_read << endl;
 
-	while(buffer_run_fast < getBufferEnd() && rotates < 10)
+	while(char_read < arqdhav->getLength() && rotates < 10/*buffer_run_fast < getBufferEnd() && rotates < 10*/)
 	{
 		cout << "e agora?" << endl;
 		buffer_run_fast = nextString(buffer_run_fast+1);
@@ -118,7 +119,11 @@ void Buffer::searchInWindow()
 			
 			cout << "rotates: " << rotates << endl;
 		}
-			buffer_run_slow = buffer_run_fast;
+
+		Phrase metadata(buffer_run_slow, buffer_run_fast - buffer_run_slow);
+		cout << "hex" << hex << metadata.getAllInfo() << endl;
+		cout << dec << endl;
+		buffer_run_slow = buffer_run_fast;
 		cout << "lidos: " << char_read << endl;
 	}
 	cout << "Programa rodado e strings foram encontradas" << endl;
