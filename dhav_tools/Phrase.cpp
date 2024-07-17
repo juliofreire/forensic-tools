@@ -10,7 +10,7 @@ Phrase::Phrase(const char* init, int real_size)
 void Phrase::setAllInfo(const char* buffer)
 {
 	channel = buffer[6];//+buffer[7];
-	sequential = buffer[8];//+buffer[9]+buffer[10]+buffer[11];
+	sequential = (int)(unsigned char)buffer[1];//+buffer[9]+buffer[10]+buffer[11];
 	size = buffer[12]+buffer[13]+buffer[14]+buffer[15];
 	data = buffer[12]+buffer[13]+buffer[14]+buffer[15];
 }
