@@ -90,7 +90,7 @@ char* Buffer::nextString(char* buffer_atual)
 		// length_search = getBufferEnd() - buffer_atual;
 	}
 	cout << "antes" << char_read << '+' << length_search <<endl;
-	char_read += length_search+1;
+	char_read += length_search+1; // adicionar ou não +1??
 	cout << "depois" <<char_read << endl;
 	return nullptr;
 }
@@ -115,23 +115,34 @@ void Buffer::searchInWindow()
 	char* buffer_run_fast = buffer_run_slow;
 	cout << "lidos: " << char_read << endl;
 
-	while(char_read < arqdhav->getLength() && rotates < 10/*buffer_run_fast < getBufferEnd() && rotates < 10*/)
+	while(char_read < arqdhav->getLength())// && rotates < 5/*buffer_run_fast < getBufferEnd() && rotates < 10*/)
 	{
 
 		cout << "e agora?" << endl;
 		buffer_run_fast = nextString(buffer_run_fast+1);
 		if (buffer_run_fast != nullptr){
-			cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[0] << endl;
+			// buffer_run_slow = getBufferInit();
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[0] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[1] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[2] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[3] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[4] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[5] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[6] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[7] << endl;
+			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[8] << endl;
+
+			buffer_run_slow = buffer_run_fast;
 			// cout << "try" << buffer_run_fast[0] << endl;// - (buffer_run_slow - getBufferInit()) << endl;
 			Phrase metadata(buffer_run_slow, buffer_run_fast - buffer_run_slow);
-			cout << "hex" << metadata.getAllInfo() << endl;
+			cout << "hex" << hex << metadata.getAllInfo() << endl;
 			cout << dec << endl;
 		}		
-		cout << "lidos: " <<char_read << endl;	
+		cout << "lidos meio: " <<char_read << endl;	
 		if (buffer_run_fast == nullptr)
 		{
 			// cout << dec << buffer_run_slow - getBufferInit() << endl;
-			int deslocate = buffer_run_slow - getBufferInit();
+			int deslocate = getBufferEnd() - buffer_run_slow;// - getBufferInit();
 			cout << "deslocate" << deslocate << endl;
 			buffer_run_fast = rotateWindow(deslocate);//length_buffer);
 			// buffer_run_fast = buffer_run_slow + (deslocate);
@@ -139,10 +150,12 @@ void Buffer::searchInWindow()
 			rotates++;
 			
 			cout << "rotates: " << rotates << endl;
+			buffer_run_slow = getBufferInit();
+			// buffer_run_slow = buffer_run_fast-deslocate-1;
 		}
 
-		buffer_run_slow = buffer_run_fast;
-		cout << "lidos: " << char_read << endl;
+		// buffer_run_slow = buffer_run_fast-deslocate;
+		cout << "lidos fim: " << char_read << endl;
 	}
 	cout << "Programa rodado e strings foram encontradas" << endl;
 }
