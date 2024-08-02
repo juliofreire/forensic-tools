@@ -13,8 +13,9 @@ Buffer::Buffer(Arqdhav* arqdhav)
 
 Buffer::~Buffer()
 {
-	delete[] buffer_init;
+	delete buffer_init;
 }
+
 
 
 int Buffer::getLength()
@@ -36,7 +37,7 @@ char* Buffer::getBufferEnd()
 
 
 void Buffer::setBuffer(){
-	arqdhav->read(getBufferInit(), getLength());
+	arqdhav->read(buffer_init, length_buffer);
 }
 
 
@@ -133,22 +134,28 @@ void Buffer::searchInWindow()
 			cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[7] << endl;
 			cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[8] << endl;
 
-			buffer_run_slow = buffer_run_fast;
 			// cout << "try" << buffer_run_fast[0] << endl;// - (buffer_run_slow - getBufferInit()) << endl;
 			Phrase metadata(buffer_run_slow, buffer_run_fast - buffer_run_slow);
-			// cout << "channel " 	  << hex << metadata.getChannel() << endl;
-			// cout << "sequential " << hex << metadata.getSequential() << endl;
-			// cout << "size "		  << hex << metadata.getSize() << endl;
-			// cout << "date " 	  << hex << metadata.getDate() << endl;
+			cout << "channel " 	  << hex << metadata.getChannel() << endl;
+			cout << "sequential " << hex << metadata.getSequential() << endl;
+			cout << "size "		  << hex << metadata.getSize() << endl;
+			cout << "date " 	  << hex << metadata.getDate() << endl;
+			cout << "Year " << dec << metadata.getYear() << endl;
+			cout << "Month " << dec << metadata.getMonth() << endl;
+			cout << "Day " << dec << metadata.getDay() << endl;
+			cout << "Hour " << dec << metadata.getHour() << endl;
+			cout << "Minute " << dec << metadata.getMinute() << endl;
+			cout << "Seconds " << dec << metadata.getSeconds() << endl;
 			cout << dec << endl;
+			buffer_run_slow = buffer_run_fast;
 		}		
 		cout << "lidos meio: " <<char_read << endl;	
 		if (buffer_run_fast == nullptr)
 		{
 			// cout << dec << buffer_run_slow - getBufferInit() << endl;
-			int deslocate = /*getBufferEnd() -*/ buffer_run_slow - getBufferInit();
+			int deslocate = getBufferEnd() - buffer_run_slow+1;// - getBufferInit();
 			cout << "deslocate" << deslocate << endl;
-			if (deslocate == 0) deslocate = length_buffer;
+			// if (deslocate == 0) deslocate = length_buffer;
 			buffer_run_fast = rotateWindow(deslocate);//length_buffer);
 			// buffer_run_fast = buffer_run_slow + (deslocate);
 

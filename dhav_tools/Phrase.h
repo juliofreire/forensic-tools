@@ -22,6 +22,7 @@ private:
 	unsigned int date;
 	long long int offset;
 	int real_size;
+	int transformDate(unsigned int, int, int);
 
 public:
 	Phrase () = delete;
@@ -31,6 +32,12 @@ public:
 	unsigned int getSequential();
 	unsigned int getSize();
 	unsigned int getDate();
+	unsigned int getYear();
+	unsigned int getMonth();
+	unsigned int getDay();
+	unsigned int getHour();
+	unsigned int getMinute();
+	unsigned int getSeconds();
 };
 
 #endif

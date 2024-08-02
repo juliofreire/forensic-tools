@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 
 
 Phrase::Phrase(const char* init, int real_size)
@@ -9,6 +10,12 @@ Phrase::Phrase(const char* init, int real_size)
 	this->real_size = real_size;
 	setAllInfo(init);
 
+}
+
+int Phrase::transformDate(unsigned int date, int bitLoc, int bitSize){
+	int mask = pow(2, bitSize)-1;
+	int tmp = date >> (32 - (bitLoc + bitSize)); 
+	return tmp & mask;
 }
 
 void Phrase::setAllInfo(const char* buffer)
@@ -20,10 +27,10 @@ void Phrase::setAllInfo(const char* buffer)
 	date = 16~19
 	*/
 
-	memcpy(&channel, buffer, 14);// channel = buffer[6];//+buffer[7];
-	memcpy(&sequential, buffer+8, 4);//sequential = (unsigned char)buffer[0];// + (unsigned char)buffer[1];//+buffer[9]+buffer[10]+buffer[11];
-	memcpy(&size, buffer+12, 4);//size = buffer[12]+buffer[13]+buffer[14]+buffer[15];
-	memcpy(&date, buffer+16, 4);//data = buffer[12]+buffer[13]+buffer[14]+buffer[15];
+	memcpy(&channel, buffer+6, 2);
+	memcpy(&sequential, buffer+8, 4);
+	memcpy(&size, buffer+12, 4);
+	memcpy(&date, buffer+16, 4);
 }
 
 unsigned short int Phrase::getChannel(){
@@ -40,4 +47,23 @@ unsigned int Phrase::getSize(){
 
 unsigned int Phrase::getDate(){
 	return date;
+}
+
+unsigned int Phrase::getYear(){
+	return transformDate(date, 0, 6);
+}
+unsigned int Phrase::getMonth(){
+	return transformDate(date, 6, 4);
+}
+unsigned int Phrase::getDay(){
+	return transformDate(date, 10, 5);
+}
+unsigned int Phrase::getHour(){
+	return transformDate(date, 15, 5);
+}
+unsigned int Phrase::getMinute(){
+	return transformDate(date, 20, 6);
+}
+unsigned int Phrase::getSeconds(){
+	return transformDate(date, 26, 6);
 }
