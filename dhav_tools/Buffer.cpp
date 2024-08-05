@@ -13,7 +13,7 @@ Buffer::Buffer(Arqdhav* arqdhav)
 
 Buffer::~Buffer()
 {
-	delete buffer_init;
+	// delete[] buffer_init;
 }
 
 
@@ -107,7 +107,7 @@ void Buffer::searchInWindow()
 	// fase de teste
 	int rotates = 0;
 	while (buffer_run_slow == nullptr){
-		buffer_run_slow = rotateWindow(length_buffer);
+		buffer_run_slow = rotateWindow(buffer_run_slow);
 		buffer_run_slow = nextString(buffer_run_slow);
 		rotates++;
 	}
@@ -116,7 +116,7 @@ void Buffer::searchInWindow()
 	char* buffer_run_fast = buffer_run_slow;
 	cout << "lidos: " << char_read << endl;
 
-	while(char_read < arqdhav->getLength() && rotates < 5000)
+	while(char_read < arqdhav->getLength() && rotates < 40)
 	{
 
 		cout << "e agora?" << endl;
@@ -153,10 +153,11 @@ void Buffer::searchInWindow()
 		if (buffer_run_fast == nullptr)
 		{
 			// cout << dec << buffer_run_slow - getBufferInit() << endl;
-			int deslocate = getBufferEnd() - buffer_run_slow+1;// - getBufferInit();
+			int deslocate = getBufferEnd() - buffer_run_slow;// - getBufferInit();
+			int read = buffer_run_slow - buffer_init;
 			cout << "deslocate" << deslocate << endl;
 			// if (deslocate == 0) deslocate = length_buffer;
-			buffer_run_fast = rotateWindow(deslocate);//length_buffer);
+			buffer_run_fast = rotateWindow(buffer_run_slow);//length_buffer);
 			// buffer_run_fast = buffer_run_slow + (deslocate);
 
 			rotates++;
@@ -172,15 +173,26 @@ void Buffer::searchInWindow()
 	cout << "Programa rodado e strings foram encontradas" << endl;
 }
 
-char* Buffer::rotateWindow(int deslocate)
+char* Buffer::rotateWindow(char* valid_buffer)
 {
+	int deslocate = buffer_end - valid_buffer;
+	int read = valid_buffer - getBufferInit();
 	cout << "=============== Rotating ================" << endl;
 	cout << "Rotacionando " << deslocate << " bytes ..." << endl;
-	memcpy(getBufferInit(), getBufferInit() + deslocate, getLength() - deslocate);
+	cout << "Serão lidos " << read << " bytes ..." << endl;
+	// char* tmp_buffer = new char[deslocate];
+	// memcpy(tmp_buffer, valid_buffer, deslocate);
+	memcpy(buffer_init, valid_buffer, deslocate);
+	// memcpy(buffer_init, tmp_buffer, deslocate);
 	cout << "Copiado..." << endl;
-	arqdhav->read(getBufferInit()+(getLength() - deslocate), deslocate);
-	// char_read -= getLength() - deslocate;
-	return getBufferInit() + getLength() - deslocate;
+	if (deslocate == length_buffer){
+		arqdhav->read(getBufferInit(), read);
+		cout << "é igual";
+	} else {
+		arqdhav->read(getBufferInit()+deslocate, read);
+	}
+	// char_read -= deslocate;
+	return getBufferInit()+deslocate;
 }
 
 //void Buffer:search(){

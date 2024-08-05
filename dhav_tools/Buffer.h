@@ -15,7 +15,7 @@ class Buffer
 
 private:
 
-	int length_buffer = 20000;
+	int length_buffer = 10500;
 	long long int char_read = 0;
 	char* buffer_init = nullptr;
 	char* buffer_end = nullptr;
@@ -42,7 +42,7 @@ public:
 	bool compareString(char*, char*);
 	char* nextString(char*);
 	void searchInWindow();
-	char* rotateWindow(int);
+	char* rotateWindow(char*);
 	
 
 };
