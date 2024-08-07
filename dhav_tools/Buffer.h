@@ -15,7 +15,7 @@ class Buffer
 
 private:
 
-	int length_buffer = 10500;
+	int length_buffer = 100000000;
 	long long int char_read = 0;
 	char* buffer_init = nullptr;
 	char* buffer_end = nullptr;
