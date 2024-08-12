@@ -2,7 +2,7 @@
 #include "Arqdhav.h"
 #include "Buffer.h"
 #include "Phrase.h"
-
+#include "Arqout.h"
 
 
 int main (){
@@ -13,7 +13,7 @@ int main (){
 	string outpath = "./ok.csv";
 
 	Arqdhav arq(path);
-
+	Arqout output(outpath);
 	// cout << arq.dirExist(path) << endl;
 
 	cout << "The program is processing the following file: " << path << endl;
@@ -24,7 +24,7 @@ int main (){
 	long long int length =  arq.getLength();
 	cout << "tamanho:" << length << endl;
 
-	Buffer buf(&arq);
+	Buffer buf(&arq, &output);
 
 	// arq.read(buf.getBufferInit(), 200);
 

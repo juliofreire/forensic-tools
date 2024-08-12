@@ -1,12 +1,13 @@
 #include "Buffer.h"
 #include <unistd.h>
+#include "Arqout.h"
 
-Buffer::Buffer(Arqdhav* arqdhav)
+Buffer::Buffer(Arqdhav* arqdhav, Arqout* arqout)
 {
 	buffer_init = new char[length_buffer];
 	buffer_end = buffer_init + length_buffer;
-
 	this->arqdhav = arqdhav;
+	this->arqout = arqout;
 
 }
 
@@ -65,7 +66,7 @@ char* Buffer::nextString(char* buffer_atual)
 	char* local_init = buffer_atual;
 	// cout << "restam: " << arqdhav->getLength() - char_read << endl;
 	int window_read = 0;
-	while(buffer_atual < getBufferEnd() - 5000)
+	while(buffer_atual < getBufferEnd())
 	{
 		buffer_atual = (char*) memchr (buffer_atual, 'D', length_search);
 		// cout << "entrou?" << endl;
@@ -88,7 +89,7 @@ char* Buffer::nextString(char* buffer_atual)
 		}
 		
 		buffer_atual++;
-		// length_search = getBufferEnd() - buffer_atual;
+		length_search = getBufferEnd() - buffer_atual;
 	}
 	// cout << "antes" << char_read << '+' << length_search <<endl;
 	char_read += length_search+1; // adicionar ou não +1??
@@ -148,6 +149,7 @@ void Buffer::searchInWindow()
 			cout << "Minute " << dec << metadata.getMinute() << endl;
 			cout << "Seconds " << dec << metadata.getSeconds() << endl;
 			cout << dec << endl;
+			arqout->WriteOn(&metadata);
 			buffer_run_slow = buffer_run_fast;
 		}		
 		// cout << "lidos meio: " << char_read << endl;	

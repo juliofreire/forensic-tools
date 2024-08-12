@@ -1,5 +1,5 @@
-#ifndef BUFFER_H
-#define BUFFER_H
+#ifndef ARQOUT_H
+#define ARQOUT_H
 
 #include <iostream>
 #include <fstream>
@@ -8,7 +8,8 @@
 
 using namespace std;
 
-class Arqout{
+class Arqout
+{
 
     private:
 
@@ -17,9 +18,9 @@ class Arqout{
 
     public:
 
-        Arqout(Phrase*);
+        Arqout(string);
         ~Arqout();
-
+        void WriteOn(Phrase*);
 };
 
 #endif

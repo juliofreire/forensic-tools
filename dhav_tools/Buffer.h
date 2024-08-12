@@ -7,6 +7,7 @@
 #include <cstring>
 #include "Arqdhav.h"
 #include "Phrase.h"
+#include "Arqout.h"
 
 using namespace std;
 
@@ -22,12 +23,13 @@ private:
 
 	string path;
 	Arqdhav* arqdhav = nullptr;
+	Arqout* arqout = nullptr;
 
 
 public:
 
 	//================ Constr e Destr =========
-	Buffer(Arqdhav*);
+	Buffer(Arqdhav*, Arqout*);
 	~Buffer();
 
 	//================ Gettings ===============
