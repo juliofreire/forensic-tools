@@ -21,6 +21,8 @@ class Arqout
         Arqout(string);
         ~Arqout();
         void WriteOn(Phrase*);
+        bool checkName(string);
+        string addIndexToName(string);
 };
 
 #endif
