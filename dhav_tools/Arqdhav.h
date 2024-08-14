@@ -17,9 +17,6 @@ private:
 
 	//================ Variables =============
 
-	// char* buffer_init = nullptr;
-	// char* buffer_end = nullptr;
-	// Buffer buffer;
 	long long int length_arq = 0;
 	string path;
 	ifstream* inputfile = nullptr;
@@ -29,7 +26,6 @@ private:
 
 public:
 
-
 	//================ Constr e Destr =========
 	Arqdhav(const string&);
 	~Arqdhav();
@@ -38,8 +34,6 @@ public:
 	void setLength();
 	void read(char*, int);
 	
-	// void setBuffers();
-
 	//================ Validations ===========
 	bool dirExist(const filesystem::path&);
 

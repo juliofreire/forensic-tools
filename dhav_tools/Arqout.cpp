@@ -1,18 +1,20 @@
 #include "Arqout.h"
 #include <cstring>
 #include <filesystem>
+#include <time.h>
 
 using namespace std;
 
 Arqout::Arqout(string filename)
 {
+    filename = addDateToName(filename);
     output = ofstream(filename, fstream::app);
     output << "Channel, Sequential, Size, Date \n";
 }
 
 Arqout::~Arqout()
 {
-    
+    output.close();
 }
 
 void Arqout::WriteOn(Phrase* phrase)
@@ -35,16 +37,20 @@ bool Arqout::checkName(string filename)
     return false;
 }
 
-string Arqout::addIndexToName(string filename)
+string Arqout::addDateToName(string filename)
 {
-    int i = 1;
+    time_t rawtime;
+    tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    string dateString = to_string(timeinfo->tm_year + 1900)+"-"+\
+                        to_string(timeinfo->tm_mon)+"-"+\
+                        to_string(timeinfo->tm_mday)+"-"+\
+                        to_string(timeinfo->tm_hour)+":"+\
+                        to_string(timeinfo->tm_min)+":"+\
+                        to_string(timeinfo->tm_sec)+".csv";
     filesystem::path in_path(filename);
-    string newFilename = in_path.filename();
-    newFilename = newFilename + "_" + to_string(i) + ".csv";
-    while (checkName(newFilename))
-    {
-        i++;
-        newFilename = newFilename + "_" + to_string(i) + ".csv";
-    }
-    return newFilename;
+    string fullfilename = filename + "-" + dateString;
+    return fullfilename;
 }

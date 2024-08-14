@@ -2,6 +2,10 @@
 #include <unistd.h>
 #include "Arqout.h"
 
+/* Initializate the buffer calling the inputfile from Arqdhav Class
+and create a file of output specified of Arqout. Moreover, set the
+length of buffers, creating a reference to where starts the buffer and
+where it ends.*/
 Buffer::Buffer(Arqdhav* arqdhav, Arqout* arqout)
 {
 	buffer_init = new char[length_buffer];
@@ -14,38 +18,34 @@ Buffer::Buffer(Arqdhav* arqdhav, Arqout* arqout)
 
 Buffer::~Buffer()
 {
-	// delete[] buffer_init;
+
 }
 
 
-
+/* A function if someone outside wants to know the length of the buffer*/
 int Buffer::getLength()
 {
 	return length_buffer;
 }
 
-
+/* Returns the begin of the buffer*/
 char* Buffer::getBufferInit()
 {
 	return buffer_init;
 }
 
-
+/* Return the end of the buffer*/
 char* Buffer::getBufferEnd()
 {
 	return buffer_end;
 }
 
-
+/* Call this function to load on the buffer in main memory, this
+allows to read more fast than in HD*/
 void Buffer::setBuffer(){
 	arqdhav->read(buffer_init, length_buffer);
 }
 
-
-// char* Buffer::getBuffers(){
-// 	return getBufferInit();
-// 	// cout << getBufferEnd() << endl;
-// }
 
 bool Buffer::compareString(char* buffer_atual, char* buffer_end)
 {

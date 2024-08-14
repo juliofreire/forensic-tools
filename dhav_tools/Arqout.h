@@ -22,7 +22,7 @@ class Arqout
         ~Arqout();
         void WriteOn(Phrase*);
         bool checkName(string);
-        string addIndexToName(string);
+        string addDateToName(string);
 };
 
 #endif

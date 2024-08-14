@@ -10,7 +10,7 @@ int main (){
 
 	// string path = "../headers/seq000001.dd";
 	string path = "../media/teste.dd";
-	string outpath = "./ok.csv";
+	string outpath = "ok";
 
 	Arqdhav arq(path);
 	Arqout output(outpath);
