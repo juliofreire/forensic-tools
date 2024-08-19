@@ -26,7 +26,7 @@ private:
 
 public:
 	Phrase () = delete;
-	Phrase (const char*, int);
+	Phrase (const char*, int, long long int);
 	void setAllInfo(const char*);
 	unsigned short int getChannel();
 	unsigned int getSequential();
@@ -38,6 +38,7 @@ public:
 	unsigned int getHour();
 	unsigned int getMinute();
 	unsigned int getSeconds();
+	int getRealSize();
 };
 
 #endif

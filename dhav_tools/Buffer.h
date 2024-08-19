@@ -41,7 +41,7 @@ public:
 	void setBuffer(/*ifstream&*/);
 
 	//================ Main Functions ========
-	bool compareString(char*, char*);
+	char* compareString(char*, char*);
 	char* nextString(char*);
 	void searchInWindow();
 	char* rotateWindow(char*);

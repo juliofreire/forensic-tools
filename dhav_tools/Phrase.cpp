@@ -5,9 +5,10 @@
 #include <cmath>
 
 
-Phrase::Phrase(const char* init, int real_size)
+Phrase::Phrase(const char* init, int real_size, long long int offset)
 {
 	this->real_size = real_size;
+	this->offset = offset;
 	setAllInfo(init);
 
 }
@@ -52,18 +53,29 @@ unsigned int Phrase::getDate(){
 unsigned int Phrase::getYear(){
 	return transformDate(date, 0, 6);
 }
+
 unsigned int Phrase::getMonth(){
 	return transformDate(date, 6, 4);
 }
+
 unsigned int Phrase::getDay(){
 	return transformDate(date, 10, 5);
 }
+
 unsigned int Phrase::getHour(){
 	return transformDate(date, 15, 5);
 }
+
 unsigned int Phrase::getMinute(){
 	return transformDate(date, 20, 6);
 }
+
 unsigned int Phrase::getSeconds(){
 	return transformDate(date, 26, 6);
 }
+
+int Phrase::getRealSize()
+{
+	return real_size;
+}
+

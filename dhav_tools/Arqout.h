@@ -18,11 +18,17 @@ class Arqout
 
     public:
 
+        
+	    //================ Constr e Destr =========
         Arqout(string);
         ~Arqout();
-        void WriteOn(Phrase*);
-        bool checkName(string);
+
+	    //================ Utilities ==============
+        bool checkName(string); // it's unecessary
         string addDateToName(string);
+
+	    //================ Actions ================
+        void WriteOn(Phrase*);
 };
 
 #endif

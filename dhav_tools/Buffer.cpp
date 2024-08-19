@@ -47,15 +47,20 @@ void Buffer::setBuffer(){
 }
 
 
-bool Buffer::compareString(char* buffer_atual, char* buffer_end)
+char* Buffer::compareString(char* buffer_atual, char* buffer_end)
 {
+
+	buffer_atual = (char*) memchr (buffer_atual, 'D', buffer_end - buffer_atual);
+	if (buffer_atual == nullptr)
+		return nullptr;
 	bool cH = (buffer_atual + 1)  < buffer_end ? *(buffer_atual + 1) == 'H' : false;
 	bool cA = (buffer_atual + 2)  < buffer_end ? *(buffer_atual + 2) == 'A' : false;
 	bool cV = (buffer_atual + 3)  < buffer_end ? *(buffer_atual + 3) == 'V' : false;
 	bool cFD = (buffer_atual + 4) < buffer_end ? (int)(unsigned char)*(buffer_atual + 4) == 253	 : false;
 	bool c0 = (buffer_atual + 5)  < buffer_end ? /*(int)(unsigned char)*/(buffer_atual + 5) == 0   : false;
 	bool match_pattern = cH && cA && cV && cFD;// && c0;
-	return match_pattern;
+	
+	return match_pattern ? buffer_atual : nullptr;
 }
 
 
@@ -68,17 +73,18 @@ char* Buffer::nextString(char* buffer_atual)
 	int window_read = 0;
 	while(buffer_atual < getBufferEnd())
 	{
-		buffer_atual = (char*) memchr (buffer_atual, 'D', length_search);
+		// buffer_atual = (char*) memchr (buffer_atual, 'D', length_search);
 		// cout << "entrou?" << endl;
-		if (buffer_atual == nullptr)
-		{
-			break;
-		}
+		// if (buffer_atual == nullptr)
+		// {
+			// break;
+		// }
 		// if (buffer_end - buffer_atual < 1000) {return nullptr;}
-		bool match_pattern = compareString(buffer_atual, getBufferEnd());
+		buffer_atual = compareString(buffer_atual, getBufferEnd());
+		if (buffer_atual == nullptr) break;
 		// if (match_pattern) {cout << "ACHEI !!!!!!!!!!!!!!!!!!!!!!!!!" << endl;};
-		if (match_pattern)
-		{
+		// if (buffer_atual)
+		// {
 			int searched = buffer_atual - local_init;
 			cout << "searched" << searched << endl;
 			int found = char_read + searched;
@@ -86,7 +92,7 @@ char* Buffer::nextString(char* buffer_atual)
 			cout << "ENCONTRADO AQUI: " << hex << found << dec << endl;
 			// cout << "buffer_atual" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_atual[0] << endl;
 			return buffer_atual;
-		}
+		// }
 		
 		buffer_atual++;
 		length_search = getBufferEnd() - buffer_atual;
@@ -137,7 +143,7 @@ void Buffer::searchInWindow()
 			// cout << "buffer slow0" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_run_slow[8] << endl;
 
 			// cout << "try" << buffer_run_fast[0] << endl;// - (buffer_run_slow - getBufferInit()) << endl;
-			Phrase metadata(buffer_run_slow, buffer_run_fast - buffer_run_slow);
+			Phrase metadata(buffer_run_slow, buffer_run_fast - buffer_run_slow, char_read - 1);
 			cout << "channel " 	  << hex << metadata.getChannel() << endl;
 			cout << "sequential " << hex << metadata.getSequential() << endl;
 			cout << "size "		  << hex << metadata.getSize() << endl;
