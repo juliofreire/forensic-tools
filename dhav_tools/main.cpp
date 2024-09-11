@@ -9,7 +9,7 @@ int main (){
 
 
 	// string path = "../headers/seq000001.dd";
-	string path = "/home/julio/Documents/forensic-tools/media/teste.dd";
+	string path = "../media/teste.dd";
 	string outpath = "ok";
 
 	Arqdhav arq(path);

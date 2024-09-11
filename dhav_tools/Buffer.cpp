@@ -47,26 +47,31 @@ void Buffer::setBuffer(){
 }
 
 
-char* Buffer::compareString(char* buffer_atual, char* buffer_end)
+int Buffer::compareString(char* buffer_atual)
 {
+/*
+0 = ok
+1 = doesnt match
+2 = doesnt find in all buffer
 
+*/
 	buffer_atual = (char*) memchr (buffer_atual, 'D', buffer_end - buffer_atual);
 	if (buffer_atual == nullptr)
-		return nullptr;
+		return 2;
 	bool cH = (buffer_atual + 1)  < buffer_end ? *(buffer_atual + 1) == 'H' : false;
 	bool cA = (buffer_atual + 2)  < buffer_end ? *(buffer_atual + 2) == 'A' : false;
 	bool cV = (buffer_atual + 3)  < buffer_end ? *(buffer_atual + 3) == 'V' : false;
 	bool cFD = (buffer_atual + 4) < buffer_end ? (int)(unsigned char)*(buffer_atual + 4) == 253	 : false;
 	bool c0 = (buffer_atual + 5)  < buffer_end ? /*(int)(unsigned char)*/(buffer_atual + 5) == 0   : false;
 	bool match_pattern = cH && cA && cV && cFD;// && c0;
-	
-	return match_pattern ? buffer_atual : nullptr;
+	if (match_pattern != 0)	printf("achei algo");
+	return match_pattern ? 0 : 1;
 }
 
 
 char* Buffer::nextString(char* buffer_atual)
 {
-	int length_search = getBufferEnd() - buffer_atual;
+	int length_search = buffer_end - buffer_atual;
 	// cout << "okok" << length_search << endl;
 	char* local_init = buffer_atual;
 	// cout << "restam: " << arqdhav->getLength() - char_read << endl;
@@ -80,11 +85,15 @@ char* Buffer::nextString(char* buffer_atual)
 			// break;
 		// }
 		// if (buffer_end - buffer_atual < 1000) {return nullptr;}
-		buffer_atual = compareString(buffer_atual, getBufferEnd());
-		if (buffer_atual == nullptr) break;
+		int pattern;
+		pattern = compareString(buffer_atual);
+
+		if (pattern == 2) break;
 		// if (match_pattern) {cout << "ACHEI !!!!!!!!!!!!!!!!!!!!!!!!!" << endl;};
 		// if (buffer_atual)
 		// {
+		if (pattern == 0)
+		{
 			int searched = buffer_atual - local_init;
 			cout << "searched" << searched << endl;
 			int found = char_read + searched;
@@ -92,6 +101,7 @@ char* Buffer::nextString(char* buffer_atual)
 			cout << "ENCONTRADO AQUI: " << hex << found << dec << endl;
 			// cout << "buffer_atual" << hex << setw(2) << setfill('0') << (int)(unsigned char)buffer_atual[0] << endl;
 			return buffer_atual;
+		}
 		// }
 		
 		buffer_atual++;
