@@ -46,7 +46,7 @@ void Buffer::setBuffer(){
 	arqdhav->read(buffer_init, length_buffer);
 }
 
-
+//TODO: INSERT ALL THE CODE INSIDE COMPARESTRING
 bool Buffer::compareString(char* buffer_atual, char* buffer_end)
 {
 	bool cH = (buffer_atual + 1)  < buffer_end ? *(buffer_atual + 1) == 'H' : false;
